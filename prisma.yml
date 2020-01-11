@@ -1,0 +1,11 @@
+datamodel: datamodel.prisma
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client/
+hooks:
+  post-deploy:
+    - npx nexus-prisma-generate --client ./generated/prisma-client --output ./generated/nexus-prisma
+# seed:
+#   run: ts-node --files ./src/seeds/seed.ts
+
+endpoint: ${env:PRISMA_ENDPOINT}

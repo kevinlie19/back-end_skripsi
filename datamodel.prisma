@@ -1,0 +1,24 @@
+type User {
+  id: ID! @id
+  username: String! @unique
+  email: String! @unique
+  password: String!
+  fullName: String!
+  avatar: String
+  badge: [Badge]
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Badge {
+  id: ID! @id
+  name: String!
+  description: String!
+  image: String!
+}
+
+type Avatar {
+  id: ID! @id
+  image: String!
+  price: Int!
+}

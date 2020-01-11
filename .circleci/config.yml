@@ -1,0 +1,38 @@
+version: 2.1
+jobs:
+  testing:
+    docker:
+      - image: circleci/node:8.15.0
+      - image: postgres:10.3
+        environment:
+          POSTGRES_USER: prisma
+          POSTGRES_PASSWORD: prisma
+      - image: prismagraphql/prisma:1.34
+        environment:
+          PRISMA_CONFIG: |
+            port: 4466
+            databases:
+              default:
+                connector: postgres
+                host: localhost
+                port: 5432
+                user: prisma
+                password: prisma
+    environment:
+      SECRET: bruce-wayne-is-batman
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+      - run: yarn --frozen-lockfile
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - run: yarn test
+workflows:
+  main:
+    jobs:
+      - testing
