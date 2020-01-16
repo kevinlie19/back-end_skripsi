@@ -7,30 +7,19 @@ import { generateJWT } from '../helpers/jwt';
 export let register = mutationField('register', {
   type: 'Auth',
   args: {
-    username: stringArg({ required: true }),
     email: stringArg({ required: true }),
     password: stringArg({ required: true }),
-    fullName: stringArg({ required: true }),
+    name: stringArg({ required: true }),
     avatarId: arg({ type: 'ID' }),
   },
-  resolve: async (
-    _,
-    { email, username, password, fullName, avatarId },
-    ctx: Context,
-  ) => {
+  resolve: async (_, { email, password, name, avatarId }, ctx: Context) => {
     let normalizedEmail = email.toLocaleLowerCase();
     let emailUsed = await ctx.prisma.$exists.user({
       email,
     });
-    let usernameUsed = await ctx.prisma.$exists.user({
-      username,
-    });
 
     if (emailUsed) {
       throw new Error('Email already exists');
-    }
-    if (usernameUsed) {
-      throw new Error('Username already exists');
     }
 
     let hash = sjcl.codec.hex.fromBits(
@@ -39,8 +28,7 @@ export let register = mutationField('register', {
 
     let user = await ctx.prisma.createUser({
       email: normalizedEmail,
-      username,
-      fullName,
+      name,
       password: hash,
     });
 
