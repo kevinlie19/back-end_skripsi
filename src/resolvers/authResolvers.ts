@@ -41,6 +41,11 @@ export let register = mutationField('register', {
               id: avatarId,
             },
           },
+          avatarCollection: {
+            connect: {
+              id: avatarId,
+            },
+          },
         },
       });
     }
