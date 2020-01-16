@@ -4,21 +4,58 @@ type User {
   email: String! @unique
   password: String!
   fullName: String!
-  avatar: String
+  avatar: Avatar @relation(name: "UserAvatar")
+  avatarCollection: [Avatar] @relation(name: "AvatarCollection")
   badge: [Badge]
+  highestScore: Int! @default(value: 0)
+  point: Int! @default(value: 0)
+  exams: [Exam]
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
-type Badge {
+type Exam {
   id: ID! @id
-  name: String!
-  description: String!
-  image: String!
+  choices: [Choice]
 }
 
 type Avatar {
   id: ID! @id
   image: String!
   price: Int!
+}
+
+type Badge {
+  id: ID! @id
+  name: String!
+}
+
+type CategoryConditionEnum {
+  id: ID! @id
+  Category: QuestionEnum
+  score: Int!
+}
+
+type Question {
+  id: ID! @id
+  description: String!
+  choices: [Choice!]!
+  category: QuestionEnum!
+}
+
+type Choice {
+  id: ID! @id
+  question: Question
+  answer: String!
+  correct: Boolean! @default(value: false)
+}
+
+enum QuestionEnum {
+  CPR
+  Burns
+  Bruised
+  Impaled
+  OpenWound
+  NoseBleed
+  Cramps
 }
