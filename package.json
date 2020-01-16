@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node-dev ./src/main.ts",
-    "test": "yarn generate && yarn prisma-delete && yarn prisma-deploy && ts-node --transpile-only src/schema.ts && yarn lint && yarn typecheck && yarn format:check && yarn jest",
+    "test": "yarn generate && yarn lint && yarn typecheck && yarn format:check && yarn jest",
     "local-jest": "yarn prisma-delete && yarn prisma-deploy && jest --coverage --passWithNoTests --verbose",
     "generate": "prisma generate && nexus-prisma-generate --client ./generated/prisma-client --output ./generated/nexus-prisma",
     "lint": "eslint --max-warnings 0 \"src/**/*.ts\"",
