@@ -1,7 +1,7 @@
 version: '3'
 services:
   prisma:
-    container_name: skripsi-prisma
+    container_name: kevin-prisma
     image: prismagraphql/prisma:1.34
     restart: always
     ports:
@@ -17,7 +17,7 @@ services:
             user: prisma
             password: prisma
   postgres:
-    container_name: skripsi-db
+    container_name: kevin-db
     image: postgres:10.3
     restart: always
     ports:
