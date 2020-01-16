@@ -1,4 +1,4 @@
-import { stringArg, mutationField } from 'nexus';
+import { stringArg, mutationField, arg } from 'nexus';
 import sjcl from 'sjcl';
 
 import { Context } from '../main';
@@ -11,11 +11,11 @@ export let register = mutationField('register', {
     email: stringArg({ required: true }),
     password: stringArg({ required: true }),
     fullName: stringArg({ required: true }),
-    avatar: stringArg(),
+    avatarId: arg({ type: 'ID' }),
   },
   resolve: async (
     _,
-    { email, username, password, ...createUserData },
+    { email, username, password, fullName, avatarId },
     ctx: Context,
   ) => {
     let normalizedEmail = email.toLocaleLowerCase();
@@ -40,9 +40,22 @@ export let register = mutationField('register', {
     let user = await ctx.prisma.createUser({
       email: normalizedEmail,
       username,
+      fullName,
       password: hash,
-      ...createUserData,
     });
+
+    if (avatarId) {
+      user = await ctx.prisma.updateUser({
+        where: { email: normalizedEmail },
+        data: {
+          avatar: {
+            connect: {
+              id: avatarId,
+            },
+          },
+        },
+      });
+    }
 
     return { token: generateJWT(user.id), user };
   },
