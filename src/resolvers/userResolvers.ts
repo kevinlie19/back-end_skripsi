@@ -24,14 +24,31 @@ export let updateProfile = mutationField('updateProfile', {
     point: intArg(),
   },
   resolve: async (_, { avatarId, ...updateProfileData }, ctx: Context) => {
+    if (avatarId) {
+      let avatarCollection = await ctx.prisma
+        .user({ id: ctx.userId })
+        .avatarCollection();
+
+      if (avatarCollection.find(({ id }) => id === avatarId)) {
+        return await ctx.prisma.updateUser({
+          data: {
+            ...updateProfileData,
+            avatar: {
+              connect: {
+                id: avatarId,
+              },
+            },
+          },
+          where: {
+            id: ctx.userId,
+          },
+        });
+      }
+      throw new Error('Cannot change avatar which is not in avatar collection');
+    }
     return await ctx.prisma.updateUser({
       data: {
         ...updateProfileData,
-        avatar: {
-          connect: {
-            id: avatarId,
-          },
-        },
       },
       where: {
         id: ctx.userId,
