@@ -77,3 +77,13 @@ export let addToAvatarCollection = mutationField('addToAvatarCollection', {
     });
   },
 });
+
+export let leaderboard = queryField('leaderboard', {
+  type: 'User',
+  list: true,
+  resolve: async (_, __, ctx: Context) => {
+    return (await ctx.prisma.users()).sort(
+      (a, b) => b.highestScore - a.highestScore,
+    );
+  },
+});
