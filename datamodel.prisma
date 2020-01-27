@@ -50,11 +50,7 @@ type Choice {
 }
 
 enum QuestionEnum {
-  CPR
-  Burns
-  Bruised
-  Impaled
-  OpenWound
-  NoseBleed
-  Cramps
+  Paket1
+  Paket2
+  Paket3
 }
