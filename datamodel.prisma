@@ -5,17 +5,27 @@ type User {
   name: String!
   avatar: Avatar @relation(name: "UserAvatar")
   avatarCollection: [Avatar] @relation(name: "AvatarCollection")
-  badge: [Badge]
+  # badge: [Badge]
   highestScore: Int! @default(value: 0)
   point: Int! @default(value: 0)
-  exams: [Exam]
+  # exams: [Exam]
+  progress: Progress!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
 
-type Exam {
+# type Exam {
+#   id: ID! @id
+#   category: QuestionEnum!
+#   score: Int!
+#   choices: [Choice]
+# }
+
+type Progress {
   id: ID! @id
-  choices: [Choice]
+  Paket1: Int! @default(value: 0)
+  Paket2: Int! @default(value: 0)
+  Paket3: Int! @default(value: 0)
 }
 
 type Avatar {
@@ -24,10 +34,10 @@ type Avatar {
   price: Int!
 }
 
-type Badge {
-  id: ID! @id
-  name: String!
-}
+# type Badge {
+#   id: ID! @id
+#   name: String!
+# }
 
 type CategoryConditionEnum {
   id: ID! @id

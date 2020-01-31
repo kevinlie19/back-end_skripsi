@@ -28,6 +28,13 @@ export let register = mutationField('register', {
       email: normalizedEmail,
       name,
       password: hash,
+      progress: {
+        create: {
+          Paket1: 0,
+          Paket2: 0,
+          Paket3: 0,
+        },
+      },
     });
 
     if (avatarId) {

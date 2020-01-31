@@ -7,13 +7,12 @@ export let questions = queryField('questions', {
   args: {
     category: arg({ type: 'Category', required: true }),
   },
-  resolve: async (_, { category }, ctx: Context) => {
-    return await ctx.prisma.questions({
+  resolve: async (_, { category }, ctx: Context) =>
+    await ctx.prisma.questions({
       where: {
         category,
       },
-    });
-  },
+    }),
 });
 
 export let createQuestion = mutationField('createQuestion', {
