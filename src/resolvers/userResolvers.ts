@@ -135,3 +135,26 @@ export let checkPassword = queryField('checkPassword', {
     }
   },
 });
+
+export let updateUserProgress = mutationField('updateUserProgress', {
+  type: 'User',
+  args: {
+    Paket1: intArg(),
+    Paket2: intArg(),
+    Paket3: intArg(),
+  },
+  resolve: async (_, { ...updateUserProgress }, ctx: Context) => {
+    return await ctx.prisma.updateUser({
+      data: {
+        progress: {
+          update: {
+            ...updateUserProgress,
+          },
+        },
+      },
+      where: {
+        id: ctx.userId,
+      },
+    });
+  },
+});
