@@ -1,5 +1,5 @@
 import { stringArg, mutationField, arg } from 'nexus';
-import sjcl from 'sjcl';
+import { sha256 } from 'js-sha256';
 
 import { Context } from '../main';
 import { generateJWT } from '../helpers/jwt';
@@ -22,9 +22,7 @@ export let register = mutationField('register', {
       throw new Error('Email already exists');
     }
 
-    let hash = sjcl.codec.hex.fromBits(
-      sjcl.hash.sha256.hash(password + process.env.SALT || ''),
-    );
+    let hash = sha256(password + process.env.SALT || '');
 
     let user = await ctx.prisma.createUser({
       email: normalizedEmail,
@@ -69,9 +67,7 @@ export let login = mutationField('login', {
     if (!user) {
       throw new Error('User not found');
     }
-    let hashedPassword = sjcl.codec.hex.fromBits(
-      sjcl.hash.sha256.hash(password + process.env.SALT || ''),
-    );
+    let hashedPassword = sha256(password + process.env.SALT || '');
     if (user.password === hashedPassword) {
       return { token: generateJWT(user.id), user };
     } else {
