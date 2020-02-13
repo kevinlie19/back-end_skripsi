@@ -63,6 +63,7 @@ export let updateProfile = mutationField('updateProfile', {
     }
     return await ctx.prisma.updateUser({
       data: {
+        password,
         ...updateProfileData,
       },
       where: {
